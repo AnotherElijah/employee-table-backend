@@ -1,27 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const User = require("../models/userModel");
+const Worker = require("../models/workerModel");
 const bodyParser = require('body-parser');
-const UserSchema = require("../schemas/userSchema");
 router.use(bodyParser.json());
 
-router.post('/user', function (req, res) {
-    const newUser = new User({
+router.get('/', function (req, res) {
+    Worker.find({}).then(data => res.json(data))
+});
+
+router.post('/create', function (req, res) {
+    const newWorker = new Worker({
         ...req.body
     });
-    newUser.save()
+    newWorker.save()
         .then(() => res.status(201).send(
             {message: req.body.firstName + ' ' + req.body.secondName + ' successfully saved'}
             ),
             err=>console.log(err)
         )
 });
-router.get('/users', function (req, res) {
-    User.find({}).then(data => res.json(data))
-});
-router.delete('/user', function (req, res) {
-    User.deleteOne({_id: req.query.id}).then(() => res.status(201).send({message: 'User has been deleted'})
+
+router.delete('/delete', function (req, res) {
+    Worker.deleteOne({_id: req.query.id}).then(() => res.status(201).send({message: 'Worker has been deleted'})
     )
 })
-//TODO tags
 module.exports = router;

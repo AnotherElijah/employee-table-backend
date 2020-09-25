@@ -1,9 +1,13 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const app = express();
-const router = require('./user.controller');
+const router = require('./controllers/worker.controller');
+const tags = require('./controllers/tags.controller');
+const seedWorkers = require("./seeds/workerSeeds");
 
-app.use('/', router);
+seedWorkers();
+app.use('/workers', router);
+app.use('/tags', tags);
 
 connectDB();
 
